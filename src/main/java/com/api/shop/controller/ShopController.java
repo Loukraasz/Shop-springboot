@@ -27,6 +27,7 @@ public class ShopController {
     @Autowired
     ShopRepository shopRepository;
 
+    /*metodo post, bem basico porem funcional */
     @PostMapping("/products")
     public ResponseEntity<Object> saveProduct(@RequestBody @Valid ShopDto shopDto){
         Optional<ShopModels> product = shopRepository.existsByName(shopDto.name());
@@ -38,6 +39,7 @@ public class ShopController {
         return ResponseEntity.status(HttpStatus.CREATED).body(shopRepository.save(shopModels));
         
     }
+    /*metodo GetAll, esse metodo retorna uma lista com todos os registros do banco de dados */
     @GetMapping("/products")
     public ResponseEntity<List<ShopModels>> getAll(){
         return ResponseEntity.status(HttpStatus.OK).body(shopRepository.findAll());
@@ -50,7 +52,7 @@ public class ShopController {
         }
             return ResponseEntity.status(HttpStatus.OK).body(shopRepository.findById(id));
     }
-
+    /*metodo put, utilizado para atualizar os registros */
     @PutMapping("/products/{id}")
     public ResponseEntity<Object>update(@PathVariable(value="id") UUID id, @RequestBody @Valid ShopDto shopDto){
         Optional<ShopModels> product = shopRepository.findById(id);
@@ -61,6 +63,7 @@ public class ShopController {
             BeanUtils.copyProperties(shopDto, product0);
             return ResponseEntity.status(HttpStatus.OK).body(shopRepository.save(product0));
     }
+    /*metodo delete, usado para deletar um registro */
     @DeleteMapping("/products/{id}")
     public ResponseEntity<Object>delete(@PathVariable(value="id") UUID id){
         Optional<ShopModels> product = shopRepository.findById(id);
@@ -71,6 +74,7 @@ public class ShopController {
             shopRepository.delete(product0);
             return ResponseEntity.status(HttpStatus.OK).body("deleted");
     }
+    /*alguns metodos precisam do id do registro que voce quer alterar, apagar ou retornar */
     
     
 }
